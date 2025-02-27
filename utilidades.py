@@ -21,5 +21,8 @@ def generarMenu():
         st.page_link("app.py", label="Inicio")
         st.page_link("pages\limpieza.py", label="Pronostico")
 
+        
+        
+
 # funcion del modelo predictivo
 

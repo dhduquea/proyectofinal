@@ -13,6 +13,8 @@ Original file is located at
 
 ### 1. Importamos las librerías que vamos a necesitar 
 
+"""
+
 
 import pandas as pd
 import time
@@ -20,4 +22,215 @@ import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+"""### 2. Procesamos el Data Frame de la Base de Datos de 'Estaciones'"""
+
+# Cargamos la base de datos sin modificar y se la asignamos a un DataFrame
+bdEstaciones = pd.read_csv('data\catalogoNacional\catalogoNacionalRaw.csv') # Datos obtenidos del IDEAM a través de Datos.gov.co
+
+#Creamos una lista con todas las columnas que vamos eliminar del DataFrame
+estacionesCdrop = ['Categoria','Nombre' 'Tecnologia', 'Estado', 'Ubicación', 'Altitud', 'Fecha_instalacion', 'Fecha_suspension', 'Area Operativa', 'Corriente', 'Area Hidrografica', 'Zona Hidrografica', 'Subzona hidrografica', 'Entidad']
+
+# Creamos un Try para que si se corre varias veces el código, no se generen
+# errores por tratar de eliminar columnas que ya no existen
+try:
+  bdEstaciones = bdEstaciones.drop(estacionesCdrop, axis=1)
+except:
+  pass
+
+
+# Eliminanmos las palabras que esten despues de '(' en la columna 'Municipios'
+bdEstaciones['Municipio'] = bdEstaciones['Municipio'].str.split('(').str[0]
+# Eliminamos los espacios en blanco antes y después de cada dato
+bdEstaciones['Municipio'] = bdEstaciones['Municipio'].str.strip()
+
+# cambialos las vocales con tilde a vocales sin tilde en la columna 'Municipio'
+bdEstaciones['Municipio'] = bdEstaciones['Municipio'].str.normalize('NFKD').str.encode('ascii', errors='ignore').str.decode('utf-8')
+
+#Elimino los espacios antes y después de cada dato
+bdEstaciones.columns = bdEstaciones.columns.str.strip()
+#Compruebo si existen registros Null o NaN
+print(bdEstaciones[bdEstaciones.isnull().any(axis=1)])
+
+bdEstaciones.to_csv('data/catalogoNacional/catalogoNacionalClean.csv')
+print(bdEstaciones.head())
+
+"""### 3. Procesamos el Data Frame de la Base de Datos de viento
+
+LLamamos el archivo de nuestra nube
 """
+
+# Cargamos la base de datos sin modificar y se la asignamos a un DataFrame
+# bdVientosRaw = pd.read_csv('data/viento/vientosRaw.csv') # IDEAM Obtenido de Datos.gov.co
+
+"""Modificamos la columna de fecha de observación pasra que tenga un formato datetime que nos permita realizar un filtrado por fechas. Se almacenan los cambios en un nuevo archivo CSV
+
+
+"""
+
+# Generamos un nuevo DataFrame donde vamos a convertir los datos de la columna
+# 'FechaObservacion' en el tipo datetime
+# bdVientosDated = bdVientosRaw.copy()
+# bdVientosDated['FechaObservacion'] = pd.to_datetime(bdVientosDated['FechaObservacion'])
+
+
+"""Se filtran los datos para trabajar con las fechas  de interes seleccionadas"""
+
+# seleccionemos los datos de FechaObservacion mayores a 2016
+# bdVientosDated = bdVientosDated[bdVientosDated['FechaObservacion'].dt.year >= 2016]
+
+
+
+"""Seleccionamos del archivo solo las columnas que deseamos conservar"""
+
+bdvientoFinal = pd.read_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/00 Procesado/vientosClean.csv')
+bdvientoFinal = bdvientoFinal.iloc[:,[0,1,2,5,6]]
+
+# limpiamos los datos de la columna 'DescripcionSensor' para eliminar
+# informacion que no es util y los convertimos en tipo String
+#bdVientosClean.loc[:, 'DescripcionSensor'] = bdVientosClean['DescripcionSensor'].astype(str).str.split('(').str[0]
+#bdVientosClean.head()
+
+"""Agrupamos las fechas por dias, inicialmente volvemos a definir la columna fechaObservacion como tipo datetime ya que al llamarlo se pierde el tipo de dato."""
+
+
+# Agrupo los datos de medicion por dia para cada sensor dejando solo el valor máximo
+bdvientoFinal = bdvientoFinal.groupby(['CodigoEstacion', bdvientoFinal['FechaObservacion'].dt.date,'DescripcionSensor','UnidadMedida'])['ValorObservado'].max().reset_index()
+
+"""Renombramos las columnas y reindexamos para que tengan el orden que genera una mejor visibilidad de los datos"""
+
+lColumn = ['CodigoEstacion', 'FechaObservacion', 'DescripcionSensor', 'ValorObservado','UnidadMedida']
+bdvientoFinal = bdvientoFinal.reindex(columns=lColumn)
+bdvientoFinal = bdvientoFinal.rename(columns={'FechaObservacion':'Fecha','DescripcionSensor':'Variable','ValorObservado':'Valor','UnidadMedida':'Unidad'})
+
+"""Se procesan los datos de la columna 'Variable' para que se tenga un valor uniforme"""
+
+
+#Convertimos los datops de la columna variable en tipo str
+bdvientoFinal['Variable'] = bdvientoFinal['Variable'].astype(str).str.strip()
+# Damos el mismo valor a todos los datos de la columna 'Variable'
+bdvientoFinal.loc[bdvientoFinal['Variable'].isin([
+    'GPRS - VELOCIDAD DEL VIENTO',
+    'VELOCIDAD DEL VIENTO',
+    'Velocidad Viento'
+]), 'Variable'] = 'Velocidad del viento'
+# Removemos los espacios en blanco antes y después en todo el DataFrame
+bdvientoFinal.columns = bdvientoFinal.columns.str.strip()
+bdvientoFinal.head()
+bdvientoFinal.to_csv('content/drive/MyDrive/Análisis de datos TT2/9. Final project/00 Procesado/vientosClean.csv')
+
+"""### 4.Procesamiendo de datos de radiacion solar"""
+
+#Cargamos todas las bases de datos de Radiación solar en DataFrames
+bdrad01 = pd.read_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/RadiacionSol/sol1.csv')
+bdrad02 = pd.read_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/RadiacionSol/sol2.csv')
+
+#Concatenamos las bases de datos de radiación solar en un solo DataFrame
+bdradRaw = pd.concat([bdrad01, bdrad02], ignore_index=True)
+bdradRaw.head()
+
+# Selecciono las columnas/ que deseo conservar
+solClean = bdradRaw.loc[:,['CodigoEstacion','Fecha', 'Variable','Unidad', 'Valor']]
+
+#intercambio el orden de las columnas unidad y valor
+solClean = solClean[['CodigoEstacion','Fecha', 'Variable','Valor','Unidad']]
+solClean['Fecha'] = pd.to_datetime(solClean['Fecha'])
+solClean.to_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/00 Procesado/solClean.csv')
+solClean.head()
+
+"""### 5. Procesamiento base de datos de caudal"""
+
+# Cargo todos los datos de Caudal en DataFrames
+caudal0 = pd.read_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/Caudal/descargaDhime.csv')
+caudal1= pd.read_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/Caudal/descargaDhime (1).csv')
+caudal2= pd.read_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/Caudal/descargaDhime (2).csv')
+caudal3= pd.read_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/Caudal/descargaDhime (3).csv')
+caudal4= pd.read_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/Caudal/descargaDhime (4).csv')
+# Concateno todos los DataFrame de caudal en un solo DataFrame
+bdCaudal = pd.concat([caudal0, caudal1, caudal2, caudal3, caudal4], ignore_index=True)
+
+# Selecciono las columnas que deso conservar y los almaceno en un Data Frame
+# nuevo
+bdCaudalClean = bdCaudal.loc[:,['CodigoEstacion','Fecha', 'Variable','Valor','Unidad']]
+# Coinviertolos datos de la columna 'Fecha' al tipo datetime
+bdCaudalClean['Fecha'] = pd.to_datetime(bdCaudalClean['Fecha'])
+# Guardo los datos limpios en un archivo CSV
+bdCaudalClean.to_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/00 Procesado/caudalClean.csv')
+bdCaudalClean.head()
+
+"""# **Procesamiento de los datos**
+
+### 6. agrupamos las tablas de datos
+"""
+
+bdDatosClean = pd.concat([bdCaudalClean, solClean, bdvientoFinal], ignore_index=True)
+bdDatosClean
+
+"""### 7. Unimos los datos con la tabla de estaciones y le damos la forma final"""
+
+#Agrupo la tabla cataloNacionalClean con bdDatosClean con llave primaria Codigo y foranea CodigoEstacion
+bdDatosFinal = pd.merge(bdDatosClean, bdEstaciones, left_on='CodigoEstacion', right_on='Codigo')
+
+# Eliminamos la columna 'CodigoEstacion'
+bdDatosFinal.drop(columns=['CodigoEstacion', 'Nombre'], inplace=True)
+
+# Reordenamos las columnas para que 'Codigo' sea la primera
+columnas_ordenadas = ['Codigo'] + [col for col in bdDatosFinal.columns if col != 'Codigo']
+bdDatosFinal = bdDatosFinal[columnas_ordenadas]
+
+# Guardamos la el DataFrame en un CSV
+bdDatosFinal.to_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/00 Procesado/datosFinalClean.csv')
+
+"""# **Visualización de los datos**
+
+### 8. Creo una gráfica por cada tipo de sensor
+"""
+
+bdDatosFinal = pd.read_csv('/content/drive/MyDrive/Análisis de datos TT2/9. Final project/00 Procesado/datosFinalClean.csv')
+# Imprimo los valores únicos de la columna Fecha
+print(bdDatosFinal['Fecha'].unique())
+
+# Convertir 'Fecha' a tipo datetime sin incluir hh:mm:ss
+bdDatosFinal['Fecha'] = pd.to_datetime(bdDatosFinal['Fecha'], format='mixed', errors='coerce')
+
+
+# --- Calcular promedio de Velocidad del Viento por Código y Día ---
+viento_df = bdDatosFinal[bdDatosFinal['Variable'] == 'Velocidad del viento']
+viento_avg = viento_df.groupby(['Codigo', bdDatosFinal['Fecha'].dt.date])['Valor'].mean().reset_index()
+viento_avg.rename(columns={'Fecha': 'FechaDia', 'Valor': 'PromedioVelocidad'}, inplace=True)
+
+# --- Calcular promedio de Caudal por Municipio y Año ---
+caudal_df = bdDatosFinal[bdDatosFinal['Variable'] == 'CAUDAL']
+caudal_df['Año'] = caudal_df['Fecha'].dt.year
+caudal_avg = caudal_df.groupby(['Municipio', 'Año'])['Valor'].mean().reset_index()
+
+# --- 1. Gráfico Heatmap para Radiación Solar ---
+solar_df = bdDatosFinal[bdDatosFinal['Variable'] == 'RAD SOLAR'].groupby('Municipio')['Valor'].mean().reset_index()
+plt.figure(figsize=(10, 5))
+sns.heatmap(solar_df.pivot_table(index='Municipio', values='Valor'), cmap='YlOrRd', annot=True, fmt='.0f')
+plt.xlabel('[Wh/m2]')
+plt.title("Mapa de Calor - Radiación Solar por Municipio")
+plt.show()
+
+# --- 2. Boxplot para Velocidad del Viento ---
+viento_municipios = viento_df.groupby('Municipio')['Valor'].mean().reset_index()
+plt.figure(figsize=(14, 6))
+sns.barplot(x='Municipio', y='Valor', data=viento_municipios, palette='Set2', hue='Municipio')
+plt.xticks(rotation=90)
+plt.ylabel("Velocidad del Viento (m/s)")
+plt.xlabel("Municipio")
+plt.title("Promedio de Velocidad del Viento por Municipio")
+plt.show()
+
+# --- 3. Gráfico Heatmap para Caudal por Municipio y Año ---
+if not caudal_avg.empty and 'Municipio' in caudal_avg.columns and 'Año' in caudal_avg.columns:
+    pivot_caudal = caudal_avg.pivot(index='Municipio', columns='Año', values='Valor')
+    plt.figure(figsize=(16, 6))
+    sns.heatmap(pivot_caudal, cmap='magma_r', annot=True, fmt='.0f')
+    plt.ylabel("Municipio")
+    plt.xlabel("Año")
+    plt.title("Promedio de Caudal por Municipio y Año")
+    plt.show()
+else:
+    print("No hay datos suficientes o hay un problema con las columnas para generar el heatmap de Caudal.")
+
+
