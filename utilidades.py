@@ -19,10 +19,10 @@ def generarMenu():
             st.header("SMEC")
 
         st.page_link("app.py", label="Inicio")
-        st.page_link("pages\limpieza.py", label="Pronostico")
+        st.page_link("pages/radiacion.py", label="Limpieza")
 
         
-        
+    
 
 # funcion del modelo predictivo
 
