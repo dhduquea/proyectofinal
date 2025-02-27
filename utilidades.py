@@ -11,15 +11,15 @@ import pandas as pd
 
 def generarMenu():
     with st.sidebar:
-        col1, col2 = st.columns(2)
-        with col1:
-            image = Image.open("media\images.png")
-            st.image(image)
-        with col2:
-            st.header("Proyecto final Análisis de datos \[integrador]")
-
+        image = Image.open("media\images.png")
+        st.image(image)
+        st.header("Proyecto final Análisis de datos \[integrador]")
         st.page_link("app.py", label="Inicio")
         st.page_link("pages/procesamiento.py", label="Limpieza")
+        st.page_link("pages/caudal.py", label="Caudal")
+        st.page_link("pages/radiacion.py", label="Radiación")
+        st.page_link("pages/viento.py", label="Viento")
+        
 
         
     
