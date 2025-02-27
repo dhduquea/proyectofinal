@@ -16,10 +16,10 @@ def generarMenu():
             image = Image.open("media\images.png")
             st.image(image)
         with col2:
-            st.header("SMEC")
+            st.header("Proyecto final Análisis de datos \[integrador]")
 
         st.page_link("app.py", label="Inicio")
-        st.page_link("pages/radiacion.py", label="Limpieza")
+        st.page_link("pages/procesamiento.py", label="Limpieza")
 
         
     
