@@ -16,7 +16,7 @@ El gráfico muestra las estaciones con mayor caudal promedio, lo que nos permite
 También es importante observar que existe una diferencia considerable entre las primeras posiciones y los municipios donde se presenta menos caudal. Esta disparidad sugiere que no todas las estaciones presentan el mismo potencial dada por la diversidad de afluentes presentes en antioquia de diverso tamaño, y podría ser necesario un análisis más detallado para determinar la estabilidad y variabilidad de los caudales.
 """)
 
-    st.image('media\heatmap_caudal.jpeg', caption='Caudal promedio de rios en Antioquia', use_container_width=True)
+    st.image('media/heatmap_caudal.jpeg', caption='Caudal promedio de rios en Antioquia', use_container_width=True)
 
     st.write("""
     Tendencias Temporales:
