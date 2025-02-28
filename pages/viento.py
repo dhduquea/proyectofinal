@@ -11,7 +11,9 @@ with col2:
     st.write("""
     El gráfico muestra las estaciones con mayor velocidad promedio del viento, lo que nos permite identificar aquellas con mayor potencial para la generación de energía eólica.
     """)
-    st.image('media/barplot_viento.jpeg', caption='Velocidad promedio del viento en Antioquia', use_container_width=True)
+    st.image('media/barplot_viento.jpeg', 
+             caption='Velocidad promedio del viento en Antioquia', 
+             use_container_width=True)
     st.write("""
     Es importante observar que existe una diferencia considerable entre la primera posición y el resto de municipios, donde se presenta menor velocidad de viento. Esta disparidad sugiere la precensia de datos atipicos. Por lo que se decide realizar una limpieza de los datos para determinar la estabilidad y variabilidad de las velocidades de viento.
     """)
@@ -24,7 +26,9 @@ with col2:
     col1, col2, col3 = st.columns([2, 2, 2],
                                   vertical_alignment='center')
     with col2:
-        st.image('media/analisis_dispersion_viento.jpeg', caption='Velocidad promedio del viento en Antioquia', use_container_width=True)
+        st.image('media/analisis_dispersion_viento.jpeg', 
+                 caption='Velocidad promedio del viento en Antioquia', 
+                 use_container_width=True)
 
     st.write("""
     Una vez realizada limpieza, el grafico obtenido se observa a continuación, en el que se puede destacar los siguiente resultados.
