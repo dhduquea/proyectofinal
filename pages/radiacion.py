@@ -6,7 +6,7 @@ util.generarMenu()
 st.markdown("<h1 style='text-align: center;'>Radiación solar</h1>", unsafe_allow_html=True)
 
 
-col1, col2, col3 = st.columns([1, 5, 1],
+col1, col2, col3 = st.columns([0.5, 6, 0.5],
                                   vertical_alignment='center')
 with col2:
     st.write("""
