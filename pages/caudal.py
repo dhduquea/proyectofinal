@@ -46,7 +46,7 @@ with col2:
     No se observan tendencias de caudal por regiones específicas          
              """)
     
-    st.image('media\diario caudal-BI.png', 
+    st.image('media/diario caudal-BI.png', 
              caption='Caudal promedio por día en cada municipio', 
              use_container_width=True)   
     st.write("""
