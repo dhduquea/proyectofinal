@@ -9,11 +9,11 @@ col1, col2, col3 = st.columns([1, 5, 1],
 with col2:
     st.title('Resultados de Viento en Antioquia')
     st.write("""
-    El gráfico muestra las estaciones con mayor velocidad promedio del viento, lo que nos permite identificar aquellas con mayor potencial para la generación de energía eólica. La estación de San Pedro lidera con una velocidad promedio de 5.5 m/s en el año 2022, seguida de cerca por las estaciones de San Carlos (5.3 m/s) y San Rafael (5.2 m/s). Estas tres estaciones destacan significativamente por sus altas velocidades de viento, lo que las convierte en candidatas ideales para proyectos de generación energética.
+    El gráfico muestra las estaciones con mayor velocidad promedio del viento, lo que nos permite identificar aquellas con mayor potencial para la generación de energía eólica.
     """)
     st.image('media/barplot_viento.jpeg', caption='Velocidad promedio del viento en Antioquia', use_container_width=True)
     st.write("""
-    También es importante observar que existe una diferencia considerable entre la primera posición y el resto de municipios, donde se presenta menor velocidad de viento. Esta disparidad sugiere la precensia de datos atipicos. Por lo que se decide realizar una limpieza de los datos para determinar la estabilidad y variabilidad de las velocidades de viento.
+    Es importante observar que existe una diferencia considerable entre la primera posición y el resto de municipios, donde se presenta menor velocidad de viento. Esta disparidad sugiere la precensia de datos atipicos. Por lo que se decide realizar una limpieza de los datos para determinar la estabilidad y variabilidad de las velocidades de viento.
     """)
     st.image('media/dispersion_viento.jpeg', caption='Disperción de los datos de velocidad de viento', use_container_width=True)
     st.write("""
