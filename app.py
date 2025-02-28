@@ -10,13 +10,13 @@ st.set_page_config(page_title='Proyecto final',
                    )
 util.generarMenu()
 
-col1, col2, col3 = st.columns([1, 0.7, 1],
+col1, col2, col3 = st.columns([0.5, 2, 0.5],
                                   vertical_alignment='center')
 with col2:
     st.image('media/antioquia2.jpg', use_container_width=True)
 
 
-col1, col2, col3 = st.columns([1, 2, 1],
+col1, col2, col3 = st.columns([0.5, 6, 0.5],
                                   vertical_alignment='center')
 with col2:
     st.write("""
