@@ -14,7 +14,7 @@ def generarMenu():
         col1, col2, col3 = st.columns([1, 2, 1],
                                   vertical_alignment='center')
         with col2:
-            image = Image.open("media\images.png")
+            image = Image.open("media/images.png")
             st.image(image)
         st.header("Proyecto final Análisis de datos \[integrador]")
         st.page_link("app.py", label="Inicio")
