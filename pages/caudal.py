@@ -5,7 +5,7 @@ import pandas as pd
 
 util.generarMenu()
 
-col1, col2, col3 = st.columns([1, 5, 1],
+col1, col2, col3 = st.columns([0.5, 6, 0.5],
                                 vertical_alignment='center')
 with col2:
     # creamos un titulo y lo centramos
