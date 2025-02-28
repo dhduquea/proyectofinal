@@ -13,7 +13,7 @@ util.generarMenu()
 st.title("Procesamiento de datos")
 st.write("En esta sección se muestra el proceso que se siguió para la limpieza de los datos para su posterior análisis")
 
-with open("pages\Proyecto.html", "r", encoding="utf-8") as f:
+with open("pages/Proyecto.html", "r", encoding="utf-8") as f:
     html_content = f.read()
 
 st.components.v1.html(html_content, height=800, scrolling=True)
