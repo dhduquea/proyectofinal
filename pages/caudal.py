@@ -16,7 +16,9 @@ with col2:
     También es importante observar que existe una diferencia considerable entre las primeras posiciones y los municipios donde se presenta menos caudal. Esta disparidad sugiere que no todas las estaciones presentan el mismo potencial dada por la diversidad de afluentes presentes en antioquia de diverso tamaño, y podría ser necesario un análisis más detallado para determinar la estabilidad y variabilidad de los caudales.
     """)
 
-    st.image('media/heatmap_caudal.jpeg', caption='Caudal promedio de rios en Antioquia', use_container_width=True)
+    st.image('media/heatmap_caudal.jpeg', 
+             caption='Caudal promedio de rios en Antioquia', 
+             use_container_width=True)
 
     st.write("""
     Tendencias Temporales:
@@ -34,7 +36,9 @@ with col2:
     la toma de decisiones.
     """)
     
-    st.image('media/anual-caudal-BI.png', caption='Caudal anual por municipio', use_container_width=True)
+    st.image('media/anual-caudal-BI.png', 
+             caption='Caudal anual por municipio', 
+             use_container_width=True)
     st.write("""
     En el gráfico generado por un dashboard en Power BI, se puede observar el comportamiento de los 
     caudales através del tiempo, usando una escala de intensidad de color para representar 
@@ -42,7 +46,9 @@ with col2:
     No se observan tendencias de caudal por regiones específicas          
              """)
     
-    st.image('media\diario caudal-BI.png', caption='Caudal promedio por día en cada municipio', use_container_width=True)   
+    st.image('media\diario caudal-BI.png', 
+             caption='Caudal promedio por día en cada municipio', 
+             use_container_width=True)   
     st.write("""
     En el gráfico generado por un dashboard en Power BI, se puede ver el caudal máximo por día del mes 
     en cada munipio, usando un gráfico de líneas por interpretar si existen patrones que se repitan 
