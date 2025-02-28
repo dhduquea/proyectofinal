@@ -2,9 +2,7 @@ import utilidades as util
 import streamlit as st
 from PIL import Image
 import pandas as pd
-from nbconvert.preprocessors import ExecutePreprocessor
-import nbformat
-import nbconvert
+
 
 st.set_page_config(page_title='Procesamiento de los datos',
                     layout='wide', 
