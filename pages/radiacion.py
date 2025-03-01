@@ -36,7 +36,7 @@ with col2:
     La variación en la radiación solar entre municipios puede atribuirse a factores geográficos y climáticos, como la altitud, la latitud y la cobertura nubosa. Las áreas en altitudes más bajas y con menor nubosidad tienden a recibir mayor radiación solar, favoreciendo la generación de energía fotovoltaica.
     """)	
     
-    st.image("media/anual-radsol-BI.png", 
+    st.image("media/rad-sol-anual-corregido.jpeg", 
              caption='Radiación solar anual por municipio',
              use_container_width=True)
     st.write("""
@@ -46,7 +46,7 @@ with col2:
             No se detectan patrones regionales de radiación solar anual
             """)
     
-    st.image("media/diario-radsol-BI.png",
+    st.image("media/Rad-sol-corregido.jpeg",
              caption='Radiación solar máxima por día en cada municipio',
              use_container_width=True)
     st.write("""
