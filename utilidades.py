@@ -1,13 +1,5 @@
 import streamlit as st
-import utilidades as util
 from PIL import Image
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-import pandas as pd
 
 def generarMenu():
     with st.sidebar:
